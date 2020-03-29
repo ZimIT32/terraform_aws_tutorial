@@ -8,15 +8,27 @@ variable "http_port" {
     type    = number
     default = 8080
 }
+resource "aws_autoscaling_group" "example" {
+    aws_launch_configuration = aws.aws_launch_configuration.name
 
-resource "aws_instance" "example" {
-    ami                     = "ami-0c55b159cbfafe1f0"
-    instance_type           = "t2.micro"
-    vpc_security_group_ids  = [aws_security_group.instance.id]
+    min_size = 2
+    max_size = 10
+
+    tag {
+        key                 = "Name"
+        value               = "terraform-ags-example"
+        propogate_at_launch = true
+    }
+}
+
+resource "aws_launch_configuration "example" {
+    image_id        = "ami-0c55b159cbfafe1f0"
+    instance_type   = "t2.micro"
+    security_groups = [aws_security_group.instance.id]
 
     user_data = <<-EOF
                 #!/bin/bash
-                echo "Hello, World!" > index.html
+                echo "Hello, World InvaderZim!" > index.html
                 nohup busybox httpd -f -p ${var.http_port} &
                 EOF
 
