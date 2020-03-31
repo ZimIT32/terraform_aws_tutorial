@@ -103,7 +103,7 @@ resource "aws_autoscaling_group" "example" {
     # loads in the default VPC from our account
     vpc_zone_identifier = data.aws_subnet_ids.default.ids
     # AWS Target group for health checks
-    target_group_arns = [aws_lb_target_group.asg]
+    target_group_arns = [aws_lb_target_group.asg.arn]
     # Default health checks are not good enough
     health_check_type = "ELB"
 
