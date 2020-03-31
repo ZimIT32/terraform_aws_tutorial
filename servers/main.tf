@@ -75,7 +75,7 @@ resource "aws_lb" "example" {
     name                = var.default_name
     load_balancer_type  = "application"
     # Default subnets from our aws subscription
-    #aws_subnet_ids      = data.aws_subnet_ids.default.ids
+    subnets      = data.aws_subnet_ids.default.ids
     security_groups     = [aws_security_group.alb.id]
 }
 
